@@ -49,10 +49,22 @@ look_up_directories(){
                         #echo $dir is an ASCII file
 
                         # now check for the pattern of the file
+                        
+                        #calculating the total line no first
+                        total_line_no=`cat "$dir" | wc -l`
+                        #echo $((total_line_no))
+
                         if [ $start_from = "begin" ]; then 
                             echo from begin
                             if head -n $lines_to_look $dir | grep -qi $word_to_look; then
                                 echo found in $dir
+
+                                ((total_matched_file = total_matched_file + 1))
+                                
+                                #finding the line no from the beginning
+                                found_in=$(grep -ni $word_to_look $dir | cut -d':' -f 1 | head -n 1)
+                                
+                                echo found in line no: $found_in 
                             else 
                                 echo not found
                             fi 
@@ -60,6 +72,21 @@ look_up_directories(){
                             echo from end
                             if tail -n $lines_to_look $dir | grep -qi $word_to_look; then
                                 echo found in $dir
+
+                                ((total_matched_file = total_matched_file + 1))
+
+                                found_from_back=`grep -ni $word_to_look $dir | cut -d':' -f 1 | tail -n 1`
+
+                                new_name=$((found_from_back)).pappa
+
+                                echo found in $((found_from_back)).pappa
+                                echo $new_name
+                                
+
+                                #actual_line_no=$((total_line_no - lines_to_look + found_from_back))
+
+                                #echo found on line no $actual_line_no
+
                             else 
                                 echo not found
                             fi
