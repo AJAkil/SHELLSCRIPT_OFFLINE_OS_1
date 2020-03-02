@@ -8,13 +8,14 @@ elif [ $# -eq 2 ];then
     input_file=$2
 elif [ $# -eq 1 ]; then
     input_file=$1
-    working_dir="$(realpath .)"
+    working_dir="$(realpath .)" #to be handled
 fi
 
 echo $working_dir_full_path 
 
 #making an output directory
 #mkdir ./output_dir
+output_dir="$(realpath )"
 
 if [ -f $input_file ]; then
     echo "Input file exist"
@@ -61,12 +62,44 @@ look_up_directories(){
 
                                 ((total_matched_file = total_matched_file + 1))
                                 
-                                #finding the line no from the beginning
-                                found_in=$(grep -ni $word_to_look $dir | cut -d':' -f 1 | head -n 1)
+                                #finding the line no from the beginning---------------------------------
+                                found_in=`grep -ni $word_to_look $dir | cut -d':' -f 1 | head -n 1`
+
+                                #modifying the file name------------------------------------------------
+
+                                file_name=`realpath $dir`
+                                #echo $file_name
+                                extension="${file_name##*.}"
+
+                                if echo $extension | grep -q \/; then 
+                                    #echo no extension
+                                    #echo $file_name
+                                    #echo woext $file_name
+
+                                    mod_f_name="${file_name//\//.}"
+                                    #echo $mod_f_name
+
+                                    new_f_name=${mod_f_name}${found_in}
+                                    #echo $new_f_name 
+                                else 
+                                    #echo extension is $extension
+
+                                    file_name_woext="${file_name%.*}"
+                                    #echo woext $file_name_woext
+
+                                    mod_f_name="${file_name_woext//\//.}"
+                                    #echo $mod_f_name
+
+                                    new_f_name=${mod_f_name}${found_in}.${extension}
+                                    #echo $new_f_name 
+                                fi
+
+                                #wriing to the directory-------------------------------------------------
+                                cp $dir ${}
                                 
                                 echo found in line no: $found_in 
                             else 
-                                echo not found
+                                echo 
                             fi 
                         elif [ $start_from = "end" ]; then 
                             echo from end
