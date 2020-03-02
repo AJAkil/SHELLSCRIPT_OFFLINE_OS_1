@@ -15,7 +15,8 @@ echo $working_dir_full_path
 
 #making an output directory
 #mkdir ./output_dir
-output_dir="$(realpath )"
+output_dir="$(realpath output_dir)"
+echo $output_dir
 
 if [ -f $input_file ]; then
     echo "Input file exist"
@@ -94,8 +95,8 @@ look_up_directories(){
                                     #echo $new_f_name 
                                 fi
 
-                                #wriing to the directory-------------------------------------------------
-                                cp $dir ${}
+                                #writing to the directory-------------------------------------------------
+                                #cp $dir "$output_dir/${new_f_name}"
                                 
                                 echo found in line no: $found_in 
                             else 
@@ -108,17 +109,49 @@ look_up_directories(){
 
                                 ((total_matched_file = total_matched_file + 1))
 
-                                found_from_back=`grep -ni $word_to_look $dir | cut -d':' -f 1 | tail -n 1`
+                                found_in=`grep -ni $word_to_look $dir | cut -d':' -f 1 | tail -n 1`
 
-                                new_name=$((found_from_back)).pappa
+                                #new_name=$((found_from_back)).pappa
 
-                                echo found in $((found_from_back)).pappa
-                                echo $new_name
+                                #echo found in $((found_from_back)).pappa
+                                #echo $new_name
                                 
 
                                 #actual_line_no=$((total_line_no - lines_to_look + found_from_back))
 
                                 #echo found on line no $actual_line_no
+
+                                #modifying the file name------------------------------------------------
+
+                                file_name=`realpath $dir`
+                                #echo $file_name
+                                extension="${file_name##*.}"
+
+                                if echo $extension | grep -q \/; then 
+                                    #echo no extension
+                                    #echo $file_name
+                                    #echo woext $file_name
+
+                                    mod_f_name="${file_name//\//.}"
+                                    #echo $mod_f_name
+
+                                    new_f_name=${mod_f_name}${found_in}
+                                    #echo $new_f_name 
+                                else 
+                                    #echo extension is $extension
+
+                                    file_name_woext="${file_name%.*}"
+                                    #echo woext $file_name_woext
+
+                                    mod_f_name="${file_name_woext//\//.}"
+                                    #echo $mod_f_name
+
+                                    new_f_name=${mod_f_name}${found_in}.${extension}
+                                    #echo $new_f_name 
+                                fi
+
+                                #writing to the directory-------------------------------------------------
+                                #cp $dir "$output_dir/${new_f_name}"
 
                             else 
                                 echo not found
