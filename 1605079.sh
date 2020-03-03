@@ -33,8 +33,7 @@ fi
 #this variable will count the total number of matched file
 total_matched_file=0
 
-#a method to travserse the directory and match the given string
-#The first parameter will be the working directory upon which we will lookup the files 
+
 look_up_directories(){
     cd "$1"
         for dir in *
@@ -303,10 +302,8 @@ browse_dir(){
 }
 
 
-
-
-
-
+#a method to travserse the directory and match the given string
+#The first parameter will be the working directory upon which we will lookup the files 
 f(){
     for dir in "$1"/*
     do
@@ -364,11 +361,10 @@ f(){
                                 fi
 
                                 #writing to the directory-------------------------------------------------
-                                cp $dir "$output_dir/${new_f_name}"
+                                #cp $dir "$output_dir/${new_f_name}"
                                 
                                 echo found in line no: $found_in 
-                            else 
-                                echo 
+                           
                             fi
 
                 elif [ $start_from = "end" ]; then 
@@ -420,22 +416,10 @@ f(){
 
                                 #writing to the directory-------------------------------------------------
                                 #cp $dir "$output_dir/${new_f_name}"
-
-                            else 
-                                echo not found
                             fi
-
-                        
                         fi
-
-
-                
                 fi
-
-            
             fi
-
-
     done    
 }
 
@@ -447,4 +431,4 @@ f $working_dir
 
 
 
-echo $total_matched_file
+echo Total Number of matched file: $total_matched_file
