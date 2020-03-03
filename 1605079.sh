@@ -33,6 +33,9 @@ fi
 #this variable will count the total number of matched file
 total_matched_file=0
 
+#making a CSV file
+touch output.csv
+echo File Path,Line Number,Line Containing Searched String>>output.csv
 
 look_up_directories(){
     cd "$1"
@@ -330,6 +333,11 @@ f(){
                                 #finding the line no from the beginning---------------------------------
                                 found_in=`grep -ni $word_to_look "$dir" | cut -d':' -f 1 | head -n 1`
 
+                                #finding the line itself from the beginning
+                                line_containing_word=`grep -i $word_to_look "$dir" | head -n 1`
+                                echo 
+                                echo line containing the word is $line_containing_word
+
                                 #modifying the file name------------------------------------------------
 
                                 
@@ -361,7 +369,12 @@ f(){
                                 fi
 
                                 #writing to the directory-------------------------------------------------
-                                #cp $dir "$output_dir/${new_f_name}"
+                                echo writing to the output $new_f_name
+                                #cp "$dir" "$output_dir/${new_f_name}"
+
+
+                                #Writing to the CSV file
+                                echo $dir,$found_in,$line_containing_word>>output.csv
                                 
                                 echo found in line no: $found_in 
                            
@@ -375,6 +388,11 @@ f(){
                                 ((total_matched_file = total_matched_file + 1))
 
                                 found_in=`grep -ni $word_to_look "$dir" | cut -d':' -f 1 | tail -n 1`
+
+                                #finding the line itself from the beginning
+                                line_containing_word=`grep -i $word_to_look "$dir" | head -n 1`
+                                echo 
+                                echo line containing the word is $line_containing_word
 
                                 #new_name=$((found_from_back)).pappa
 
@@ -415,7 +433,11 @@ f(){
                                 fi
 
                                 #writing to the directory-------------------------------------------------
-                                #cp $dir "$output_dir/${new_f_name}"
+                                cp "$dir" "$output_dir/${new_f_name}"
+
+
+                                 #Writing to the CSV file
+                                echo $dir,$found_in,$line_containing_word>>output.csv
                             fi
                         fi
                 fi
