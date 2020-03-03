@@ -1,25 +1,38 @@
 #!/bin/bash
 
+input_file=
+working_dir=
+
 if [ $# -eq 0 ]; then
-    echo "Please run the script as : working_dir(optional) file_name"
+    echo "Please run the script as : bash 1605079.sh working_dir(optional) file_name"
 elif [ $# -eq 2 ];then
     working_dir_full_path="$(realpath $1)"
     working_dir=$1
     input_file=$2
 elif [ $# -eq 1 ]; then
-    input_file=$1
-    working_dir="$(realpath .)" #to be handled
+
+    if file "$1" | grep text ; then 
+        input_file=$1
+        working_dir="$(realpath .)" #to be handled
+    else
+        echo "Please run the script as : bash 1605079.sh working_dir(optional) file_name"
+    fi
 fi
 
-echo $working_dir_full_path 
+   
+
+#echo $working_dir_full_path 
 
 #making an output directory
 #mkdir ./output_dir
 output_dir="$(realpath output_dir)"
-echo $output_dir
+#echo $output_dir
 
-if [ -f $input_file ]; then
-    echo "Input file exist"
+
+if [ ! -z "$input_file" ]
+then
+    if [ -f $input_file ]; then
+    #echo "Input file exist"
     start_from=$(head -n 1 $input_file)
     lines_to_look=$(head -n 2 $input_file | tail -n 1)
     word_to_look=$(tail -n 1 $input_file)
@@ -433,11 +446,11 @@ f(){
                                 fi
 
                                 #writing to the directory-------------------------------------------------
-                                cp "$dir" "$output_dir/${new_f_name}"
+                                #cp "$dir" "$output_dir/${new_f_name}"
 
 
                                  #Writing to the CSV file
-                                echo $dir,$found_in,$line_containing_word>>output.csv
+                                #echo $dir,$found_in,$line_containing_word>>output.csv
                             fi
                         fi
                 fi
@@ -454,3 +467,6 @@ f $working_dir
 
 
 echo Total Number of matched file: $total_matched_file
+fi
+
+
