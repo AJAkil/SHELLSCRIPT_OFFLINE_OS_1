@@ -91,8 +91,6 @@ f(){
                             #echo from begin
                             if head -n $lines_to_look "$dir" | grep -qi $word_to_look; then
                                 #echo found in $dir
-
-                                ((total_matched_file = total_matched_file + 1))
                                 
                                 #finding the line no from the beginning---------------------------------
                                 found_in=`grep -ni $word_to_look "$dir" | cut -d':' -f 1 | head -n 1`
@@ -139,39 +137,53 @@ f(){
                                     echo $new_f_name 
                                 fi
 
+
+                                #WRITING PORTIO
                                 #writing to the directory-------------------------------------------------
                                 echo writing to the output $new_f_name
-                                if [ "$is_rootwd" = "yes" ];then
-                                    cp "$file_path_before_edit" "$output_dir/${new_f_name}"
-                                else 
-                                    cp "$dir" "$output_dir/${new_f_name}"
-                                fi
+
+                                #check to see if the file is input file
+                                check="${dir##*/}"
+                                echo the thing is $check
+
+                                if [ ! "$check" = "input.txt" ]; then
+
+                                    ((total_matched_file = total_matched_file + 1))
+                                    if [ "$is_rootwd" = "yes" ];then
+                                        cp "$file_path_before_edit" "$output_dir/${new_f_name}"
+                                    else 
+                                        cp "$dir" "$output_dir/${new_f_name}"
+                                    fi
 
 
-                                #Writing to the CSV file
-                                if [ "$is_rootwd" = "yes" ];then
+                                    #Writing to the CSV file
+                                    if [ "$is_rootwd" = "yes" ];then
 
-                                    file_to_extract="${dir#*/}"
-                                else
-                                    file_to_extract=$dir
-                                fi
+                                        file_to_extract="${dir#*/}"
+                                    else
+                                        file_to_extract=$dir
+                                    fi
                                 
-                                #echo the file to extract is $file_to_extract
-                                head -n $lines_to_look "$file_to_extract" | grep -ni $word_to_look> temp.txt
-                                temp=temp.txt
-                                while IFS= read -r line
-                                do
-                                #echo the line is "$line"
-                                csv_line="${line#*:}"
-                                #echo $csv_line
+                                    #echo the file to extract is $file_to_extract
+                                    head -n $lines_to_look "$file_to_extract" | grep -ni $word_to_look> temp.txt
+                                    temp=temp.txt
+                                    while IFS= read -r line
+                                    do
+                                    #echo the line is "$line"
+                                    csv_line="${line#*:}"
+                                    #echo $csv_line
                                 
-                                line_no="${line%%:*}"
-                                echo $line_no
-                                #rm temp.txt
-                                echo writing to csv file
-                                echo $dir,$line_no,$csv_line>>"$csv"
-                                done < "$temp"
-                                rm temp.txt
+                                    line_no="${line%%:*}"
+                                    echo $line_no
+                                    #rm temp.txt
+                                    echo writing to csv file
+                                    echo $dir,$line_no,$csv_line>>"$csv"
+                                    done < "$temp"
+                                    rm temp.txt
+                                
+                                    fi
+
+
                                 
                                 #echo found in line no: $found_in 
                            
