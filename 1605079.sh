@@ -22,7 +22,7 @@ elif [ $# -eq 2 ];then
     
 elif [ $# -eq 1 ]; then
 
-    if [ -f $1 ];then
+    if [ -e $1 ];then
 
 
         if file "$1" | grep -q text ; then 
@@ -35,7 +35,7 @@ elif [ $# -eq 1 ]; then
         #echo $working_dir
             is_rootwd="yes"
         else
-            echo "PPlease run the script as : bash 1605079.sh working_dir(optional) input_file_name.txt"
+            echo "Please run the script as : bash 1605079.sh working_dir(optional) input_file_name.txt"
         fi
     else 
         echo "Please give a valid input file name"
