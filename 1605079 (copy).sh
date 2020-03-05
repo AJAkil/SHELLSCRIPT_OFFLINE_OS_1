@@ -19,13 +19,7 @@ elif [ $# -eq 1 ]; then
 
     if file "$1" | grep text ; then 
         input_file=$1
-        root="$(realpath .)"
-        echo $root
-        base_root="${root##*/}"
-        remove_from_root="${root%/*$base_root}"
-        working_dir=.
-        echo $working_dir
-        is_rootwd="yes"
+        working_dir=`pwd` #to be handled
     else
         echo "Please run the script as : bash 1605079.sh working_dir(optional) input_file_name.txt"
     fi
@@ -36,7 +30,7 @@ fi
 #echo $working_dir_full_path 
 
 #making an output directory
-mkdir ./output_dir
+#mkdir ./output_dir
 output_dir="$(realpath output_dir)"
 #echo $output_dir
 
@@ -75,7 +69,7 @@ f(){
     do
 
         if [ -d "$dir" ]; then 
-            #echo is a folder $dir 
+            echo is a folder $dir 
             #echo ekhane
             f "$dir" 
             #echo here
@@ -89,7 +83,7 @@ f(){
                 if [ $start_from = "begin" ]; then 
                             #echo from begin
                             if head -n $lines_to_look "$dir" | grep -qi $word_to_look; then
-                                #echo found in $dir
+                                echo found in $dir
 
                                 ((total_matched_file = total_matched_file + 1))
                                 
@@ -97,18 +91,11 @@ f(){
                                 found_in=`grep -ni $word_to_look "$dir" | cut -d':' -f 1 | head -n 1`
 
                                 #finding the line itself from the beginning
-                                #line_containing_word=`grep -i $word_to_look "$dir" | head -n 1`
-                                #echo 
-                                #echo line containing the word is $line_containing_word
+                                line_containing_word=`grep -i $word_to_look "$dir" | head -n 1`
+                                echo 
+                                echo line containing the word is $line_containing_word
 
                                 #modifying the file name------------------------------------------------
-                                if [ "$is_rootwd" = "yes" ];then
-
-                                    file_path_before_edit=$dir
-                                    temp="${dir#\.}"
-                                    dir=${base_root}${temp}
-                                    echo $dir
-                                fi
 
                                 
                                 #echo $file_name
@@ -140,11 +127,7 @@ f(){
 
                                 #writing to the directory-------------------------------------------------
                                 echo writing to the output $new_f_name
-                                if [ "$is_rootwd" = "yes" ];then
-                                    cp "$file_path_before_edit" "$output_dir/${new_f_name}"
-                                else 
-                                    cp "$dir" "$output_dir/${new_f_name}"
-                                fi
+                                #cp "$dir" "$output_dir/${new_f_name}"
 
 
                                 #Writing to the CSV file
@@ -179,11 +162,7 @@ f(){
                                 #echo found on line no $actual_line_no
 
                                 #modifying the file name------------------------------------------------
-                                if [ "$is_rootwd" = "yes" ];then
-                                     file_path_before_edit=$dir
-                                    temp="${dir#\.}"
-                                    dir=${base_root}${temp}
-                                fi
+
                                 #echo $file_name
                                 extension="${dir##*.}"
 
@@ -212,11 +191,6 @@ f(){
 
                                 #writing to the directory-------------------------------------------------
                                 #cp "$dir" "$output_dir/${new_f_name}"
-                                if [ "$is_rootwd" = "yes" ];then
-                                    cp "$file_path_before_edit" "$output_dir/${new_f_name}"
-                                else 
-                                    cp "$dir" "$output_dir/${new_f_name}"
-                                fi
 
 
                                  #Writing to the CSV file

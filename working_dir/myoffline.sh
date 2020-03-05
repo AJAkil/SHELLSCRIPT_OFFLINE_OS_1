@@ -10,6 +10,7 @@ rm -r ../output_dir
 mkdir ../output_dir
 output_dir_path="$(realpath ../output_dir)"
 root="$(realpath .)"
+echo $root
 base_root="${root##*/}"
 remove_from_root="${root%/*$base_root}"
 echo $base_root $remove_from_root

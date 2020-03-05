@@ -179,11 +179,7 @@ f(){
                                 #echo found on line no $actual_line_no
 
                                 #modifying the file name------------------------------------------------
-                                if [ "$is_rootwd" = "yes" ];then
-                                     file_path_before_edit=$dir
-                                    temp="${dir#\.}"
-                                    dir=${base_root}${temp}
-                                fi
+
                                 #echo $file_name
                                 extension="${dir##*.}"
 
@@ -212,11 +208,6 @@ f(){
 
                                 #writing to the directory-------------------------------------------------
                                 #cp "$dir" "$output_dir/${new_f_name}"
-                                if [ "$is_rootwd" = "yes" ];then
-                                    cp "$file_path_before_edit" "$output_dir/${new_f_name}"
-                                else 
-                                    cp "$dir" "$output_dir/${new_f_name}"
-                                fi
 
 
                                  #Writing to the CSV file

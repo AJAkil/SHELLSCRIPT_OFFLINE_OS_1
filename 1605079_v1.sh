@@ -36,8 +36,8 @@ fi
 #echo $working_dir_full_path 
 
 #making an output directory
-mkdir ./output_dir
-output_dir="$(realpath output_dir)"
+mkdir ../output_dir
+output_dir="$(realpath ../output_dir)"
 #echo $output_dir
 
 
@@ -48,7 +48,7 @@ then
     start_from=$(head -n 1 $input_file)
     lines_to_look=$(head -n 2 $input_file | tail -n 1)
     word_to_look=$(tail -n 1 $input_file)
-    echo $word_to_look
+    #echo $word_to_look
     #echo $lines_to_look
     #echo $start_from
 else 
@@ -59,12 +59,12 @@ fi
 total_matched_file=0
 
 #making a CSV file
-touch output.csv
-echo File Path,Line Number,Line Containing Searched String>>output.csv
+csv="$(realpath ../output.csv)"
+echo File Path,Line Number,Line Containing Searched String>"$csv"
+
 
 
 #look_up_directories $working_dir
-
 
 
 
@@ -73,11 +73,12 @@ echo File Path,Line Number,Line Containing Searched String>>output.csv
 f(){
     for dir in "$1"/*
     do
-
+ 
         if [ -d "$dir" ]; then 
-            #echo is a folder $dir 
+            echo is a folder $dir 
             #echo ekhane
-            f "$dir" 
+         
+                f "$dir" 
             #echo here
         elif [ -f "$dir" ]; then 
                 #echo $dir 
@@ -89,7 +90,9 @@ f(){
                 if [ $start_from = "begin" ]; then 
                             #echo from begin
                             if head -n $lines_to_look "$dir" | grep -qi $word_to_look; then
-                                #echo found in $dir
+                                echo found in $dir
+
+                                
 
                                 ((total_matched_file = total_matched_file + 1))
                                 
@@ -97,9 +100,9 @@ f(){
                                 found_in=`grep -ni $word_to_look "$dir" | cut -d':' -f 1 | head -n 1`
 
                                 #finding the line itself from the beginning
-                                #line_containing_word=`grep -i $word_to_look "$dir" | head -n 1`
-                                #echo 
-                                #echo line containing the word is $line_containing_word
+                                line_containing_word=`grep -i $word_to_look "$dir" | head -n 1`
+                                echo 
+                                echo line containing the word is $line_containing_word
 
                                 #modifying the file name------------------------------------------------
                                 if [ "$is_rootwd" = "yes" ];then
@@ -109,8 +112,6 @@ f(){
                                     dir=${base_root}${temp}
                                     echo $dir
                                 fi
-
-                                
                                 #echo $file_name
                                 extension="${dir##*.}"
 
@@ -140,6 +141,7 @@ f(){
 
                                 #writing to the directory-------------------------------------------------
                                 echo writing to the output $new_f_name
+
                                 if [ "$is_rootwd" = "yes" ];then
                                     cp "$file_path_before_edit" "$output_dir/${new_f_name}"
                                 else 
@@ -147,7 +149,33 @@ f(){
                                 fi
 
 
+                                    
+
+
                                 #Writing to the CSV file
+                                if [ "$is_rootwd" = "yes" ];then
+
+                                    file_to_extract="${dir#*/}"
+                                else
+                                    file_to_extract=$dir
+                                fi
+                                
+                                #echo the file to extract is $file_to_extract
+                                head -n $lines_to_look "$file_to_extract" | grep -ni $word_to_look> temp.txt
+                                temp=temp.txt
+                                while IFS= read -r line
+                                do
+                                #echo the line is "$line"
+                                csv_line="${line#*:}"
+                                #echo $csv_line
+                                
+                                line_no="${line%%:*}"
+                                echo $line_no
+                                #rm temp.txt
+                                echo writing to csv file
+                                echo $dir,$line_no,$csv_line>>"$csv"
+                                done < "$temp"
+                                rm temp.txt
                                 #echo $dir,$found_in,$line_containing_word>>output.csv
                                 
                                 echo found in line no: $found_in 
@@ -155,9 +183,9 @@ f(){
                             fi
 
                 elif [ $start_from = "end" ]; then 
-                            echo from end
+                            #echo from end
                             if tail -n $lines_to_look "$dir" | grep -qi $word_to_look; then
-                                echo found in $dir
+                                #echo found in $dir
 
                                 ((total_matched_file = total_matched_file + 1))
 
@@ -165,12 +193,9 @@ f(){
 
                                 #finding the line itself from the beginning
                                 line_containing_word=`grep -i $word_to_look "$dir" | head -n 1`
-                                echo 
-                                echo line containing the word is $line_containing_word
+                               # echo 
+                                #echo line containing the word is $line_containing_word
 
-                                #new_name=$((found_from_back)).pappa
-
-                                #echo found in $((found_from_back)).pappa
                                 #echo $new_name
                                 
 
@@ -179,11 +204,13 @@ f(){
                                 #echo found on line no $actual_line_no
 
                                 #modifying the file name------------------------------------------------
+
                                 if [ "$is_rootwd" = "yes" ];then
                                      file_path_before_edit=$dir
                                     temp="${dir#\.}"
                                     dir=${base_root}${temp}
                                 fi
+
                                 #echo $file_name
                                 extension="${dir##*.}"
 
@@ -207,11 +234,10 @@ f(){
                                     #echo $mod_f_name
 
                                     new_f_name=${mod_f_name}${found_in}.${extension}
-                                    #echo $new_f_name 
+                                    echo $new_f_name 
                                 fi
 
                                 #writing to the directory-------------------------------------------------
-                                #cp "$dir" "$output_dir/${new_f_name}"
                                 if [ "$is_rootwd" = "yes" ];then
                                     cp "$file_path_before_edit" "$output_dir/${new_f_name}"
                                 else 
@@ -219,7 +245,41 @@ f(){
                                 fi
 
 
-                                 #Writing to the CSV file
+                               #Writing to the CSV file
+                                if [ "$is_rootwd" = "yes" ];then
+
+                                    file_to_extract="${dir#*/}"
+                                else
+                                    file_to_extract=$dir
+                                fi
+                                
+                                #echo the file to extract is $file_to_extract
+                                tail -n $lines_to_look "$file_to_extract" | grep -ni $word_to_look> temp.txt
+                                temp=temp.txt
+                                while IFS= read -r line
+                                do
+                                echo the line is "$line"
+                                csv_line="${line#*:}"
+                                #echo $csv_line
+                                
+                                line_no="${line%%:*}"
+                                echo $line_no
+                                t=`wc -l "$file_to_extract" | cut -d' ' -f 1`
+                                echo $t
+                                if [ "$t" -gt "$lines_to_look" ]; then 
+                                    ((t = t - lines_to_look))
+                                    echo $t
+                                    ((t = t + line_no))
+                                    req_line_no=$t
+                                    echo $total_line_no
+                                else 
+                                    req_line_no=$line_no
+                                fi 
+                                echo chame diye asho
+                                
+                                echo $dir,$req_line_no,$csv_line>>"$csv"
+                                done < "$temp"
+                                rm temp.txt
                                 #echo $dir,$found_in,$line_containing_word>>output.csv
                             fi
                         fi
@@ -227,8 +287,10 @@ f(){
             fi
     done    
 }
+#echo $working_dir
+#echo $base_root
 
-f $working_dir
+#f $working_dir
 
 
 
