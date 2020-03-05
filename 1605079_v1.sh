@@ -206,7 +206,7 @@ f(){
                                 #modifying the file name------------------------------------------------
 
                                 if [ "$is_rootwd" = "yes" ];then
-                                     file_path_before_edit=$dir
+                                    file_path_before_edit=$dir
                                     temp="${dir#\.}"
                                     dir=${base_root}${temp}
                                 fi
