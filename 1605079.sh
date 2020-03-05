@@ -16,15 +16,14 @@ elif [ $# -eq 2 ];then
     fi
     
 elif [ $# -eq 1 ]; then
-
-    if file "$1" | grep text ; then 
+    if file "$1" | grep -q text ; then 
         input_file=$1
         root="$(realpath .)"
-        echo $root
+        #echo $root
         base_root="${root##*/}"
         remove_from_root="${root%/*$base_root}"
         working_dir=.
-        echo $working_dir
+       #echo $working_dir
         is_rootwd="yes"
     else
         echo "Please run the script as : bash 1605079.sh working_dir(optional) input_file_name.txt"
@@ -48,7 +47,7 @@ then
     start_from=$(head -n 1 $input_file)
     lines_to_look=$(head -n 2 $input_file | tail -n 1)
     word_to_look=$(tail -n 1 $input_file)
-    echo $word_to_look
+    #echo $word_to_look
     #echo $lines_to_look
     #echo $start_from
 else 
@@ -106,7 +105,7 @@ f(){
                                     file_path_before_edit=$dir
                                     temp="${dir#\.}"
                                     dir=${base_root}${temp}
-                                    echo $dir
+                                   # echo $dir
                                 fi
 
                                 
@@ -114,8 +113,8 @@ f(){
                                 extension="${dir##*.}"
 
                                 if echo $extension | grep -q \/; then 
-                                    echo no extension
-                                    echo $dir
+                                    #echo no extension
+                                    #echo $dir
                                     #echo $file_name
                                     #echo woext $file_name
 
@@ -123,28 +122,28 @@ f(){
                                     #echo $mod_f_name
 
                                     new_f_name=${mod_f_name}${found_in}
-                                    echo $new_f_name 
+                                    #echo $new_f_name 
                                 else 
-                                    echo extension is $extension
+                                    #echo extension is $extension
 
                                     file_name_woext="${dir%.*}"
-                                    echo woext $file_name_woext
+                                    #echo woext $file_name_woext
 
                                     mod_f_name="${file_name_woext//\//.}"
-                                    echo $mod_f_name
+                                    #echo $mod_f_name
 
                                     new_f_name=${mod_f_name}${found_in}.${extension}
-                                    echo $new_f_name 
+                                   # echo $new_f_name 
                                 fi
 
 
                                 #WRITING PORTIO
                                 #writing to the directory-------------------------------------------------
-                                echo writing to the output $new_f_name
+                                #echo writing to the output $new_f_name
 
                                 #check to see if the file is input file
                                 check="${dir##*/}"
-                                echo the thing is $check
+                                #echo the thing is $check
 
                                 if [ ! "$check" = "input.txt" ]; then
 
@@ -174,9 +173,9 @@ f(){
                                     #echo $csv_line
                                 
                                     line_no="${line%%:*}"
-                                    echo $line_no
+                                   # echo $line_no
                                     #rm temp.txt
-                                    echo writing to csv file
+                                    #echo writing to csv file
                                     echo $dir,$line_no,$csv_line>>"$csv"
                                     done < "$temp"
                                     rm temp.txt
