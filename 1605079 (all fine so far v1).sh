@@ -36,8 +36,8 @@ fi
 #echo $working_dir_full_path 
 
 #making an output directory
-mkdir ../output_dir
-output_dir="$(realpath ../output_dir)"
+mkdir ./output_dir
+output_dir="$(realpath output_dir)"
 #echo $output_dir
 
 
