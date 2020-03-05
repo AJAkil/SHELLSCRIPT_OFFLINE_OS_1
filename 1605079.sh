@@ -7,17 +7,23 @@ if [ $# -eq 0 ]; then
     echo "lease run the script as : bash 1605079.sh working_dir(optional) input_file_name.txt"
 elif [ $# -eq 2 ];then
 
-    if [ -f $2 ];then
+    
+    if [ -e $1 ]; then
+        if [ -f $2 ];then
 
-        if file $2 | grep directory; then
-            echo "PpPlease run the script as : bash 1605079.sh working_dir(optional) input_file_name.txt"
+            if file $2 | grep directory; then
+                echo "Please run the script as : bash 1605079.sh working_dir(optional) input_file_name.txt"
+            else 
+                working_dir_full_path="$(realpath $1)"
+                working_dir=$1
+                input_file=$2
+            fi
         else 
-            working_dir_full_path="$(realpath $1)"
-            working_dir=$1
-            input_file=$2
+            echo "Please give a valid input file name"
         fi
     else 
-        echo "Please give a valid input file name"
+        echo "Please give a valid working directory"
+    
     fi
     
 elif [ $# -eq 1 ]; then
