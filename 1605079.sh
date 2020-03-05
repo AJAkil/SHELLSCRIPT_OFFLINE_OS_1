@@ -149,9 +149,31 @@ f(){
 
 
                                 #Writing to the CSV file
-                                #echo $dir,$found_in,$line_containing_word>>output.csv
+                                if [ "$is_rootwd" = "yes" ];then
+
+                                    file_to_extract="${dir#*/}"
+                                else
+                                    file_to_extract=$dir
+                                fi
                                 
-                                echo found in line no: $found_in 
+                                #echo the file to extract is $file_to_extract
+                                head -n $lines_to_look "$file_to_extract" | grep -ni $word_to_look> temp.txt
+                                temp=temp.txt
+                                while IFS= read -r line
+                                do
+                                #echo the line is "$line"
+                                csv_line="${line#*:}"
+                                #echo $csv_line
+                                
+                                line_no="${line%%:*}"
+                                echo $line_no
+                                #rm temp.txt
+                                echo writing to csv file
+                                echo $dir,$line_no,$csv_line>>"$csv"
+                                done < "$temp"
+                                rm temp.txt
+                                
+                                #echo found in line no: $found_in 
                            
                             fi
 
