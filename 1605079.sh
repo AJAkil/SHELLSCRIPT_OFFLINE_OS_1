@@ -59,8 +59,9 @@ fi
 total_matched_file=0
 
 #making a CSV file
-touch output.csv
-echo File Path,Line Number,Line Containing Searched String>>output.csv
+csv="$(realpath ../output.csv)"
+echo File Path,Line Number,Line Containing Searched String>"$csv"
+
 
 
 #look_up_directories $working_dir
