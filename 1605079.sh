@@ -4,7 +4,7 @@ input_file=
 working_dir=
 
 if [ $# -eq 0 ]; then
-    echo "lease run the script as : bash 1605079.sh working_dir(optional) input_file_name.txt"
+    echo "Please run the script as : bash 1605079.sh working_dir(optional) input_file_name.txt"
 elif [ $# -eq 2 ];then
 
     
@@ -49,7 +49,7 @@ elif [ $# -eq 1 ]; then
 fi
 
    
-   
+
 if [ ! -z "$input_file" ];then
     if [ -f $input_file ]; then
         
