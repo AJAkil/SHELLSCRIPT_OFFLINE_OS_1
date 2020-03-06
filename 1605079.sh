@@ -142,7 +142,7 @@ if [ ! -z "$input_file" ];then
                                     check="${dir##*/}"
                                     #echo the thing is $check
 
-                                    if [ ! "$check" = "input.txt" ]; then
+                                    if [ ! "$check" = "$input_file" ]; then
 
                                         ((total_matched_file = total_matched_file + 1))
                                         if [ "$is_rootwd" = "yes" ];then
@@ -227,7 +227,7 @@ if [ ! -z "$input_file" ];then
                                     #check to see if the file is input file
                                     check="${dir##*/}"
                     
-                                    if [ ! "$check" = "input.txt" ]; then
+                                    if [ ! "$check" = "$input_file" ]; then
 
                                         ((total_matched_file = total_matched_file + 1))
                                         #writing to the directory-------------------------------------------------
