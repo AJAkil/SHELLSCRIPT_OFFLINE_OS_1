@@ -97,11 +97,11 @@ if [ ! -z "$input_file" ];then
 
                     if [ $start_from = "begin" ]; then 
                                 #echo from begin
-                                if head -n $lines_to_look "$dir" | grep -qi $word_to_look; then
+                                if head -n $lines_to_look "$dir" | grep -qi "$word_to_look"; then
                                     #echo found in $dir
                                     
                                     #finding the line no from the beginning---------------------------------
-                                    found_in=`grep -ni $word_to_look "$dir" | cut -d':' -f 1 | head -n 1`
+                                    found_in=`grep -ni "$word_to_look" "$dir" | cut -d':' -f 1 | head -n 1`
 
                                     #finding the line itself from the beginning
                                     #line_containing_word=`grep -i $word_to_look "$dir" | head -n 1`
@@ -171,7 +171,7 @@ if [ ! -z "$input_file" ];then
                                         fi
                                     
                                         #echo the file to extract is $file_to_extract
-                                        head -n $lines_to_look "$file_to_extract" | grep -ni $word_to_look> temp.txt
+                                        head -n $lines_to_look "$file_to_extract" | grep -ni "$word_to_look"> temp.txt
                                         temp=temp.txt
                                         while IFS= read -r line
                                         do
@@ -197,13 +197,13 @@ if [ ! -z "$input_file" ];then
 
                     elif [ $start_from = "end" ]; then 
                                 #echo from end
-                                if tail -n $lines_to_look "$dir" | grep -qi $word_to_look; then
+                                if tail -n $lines_to_look "$dir" | grep -qi "$word_to_look"; then
                                     #echo found in $dir
 
-                                    found_in=`grep -ni $word_to_look "$dir" | cut -d':' -f 1 | tail -n 1`
+                                    found_in=`grep -ni "$word_to_look" "$dir" | cut -d':' -f 1 | tail -n 1`
 
                                     #finding the line itself from the beginning
-                                    line_containing_word=`grep -i $word_to_look "$dir" | head -n 1`
+                                    line_containing_word=`grep -i "$word_to_look" "$dir" | head -n 1`
                                     #echo 
                                     #echo line containing the word is $line_containing_word
 
@@ -275,7 +275,7 @@ if [ ! -z "$input_file" ];then
 
 
                                         #echo the file to extract is $file_to_extract
-                                        tail -n $lines_to_look "$file_to_extract" | grep -ni $word_to_look> temp.txt
+                                        tail -n $lines_to_look "$file_to_extract" | grep -ni "$word_to_look"> temp.txt
                                         temp=temp.txt
                                         while IFS= read -r line
                                         do
