@@ -49,14 +49,7 @@ elif [ $# -eq 1 ]; then
 fi
 
    
-
-#echo $working_dir_full_path 
-
-#making an output directory
-
-#echo $output_dir
-
-
+   
 if [ ! -z "$input_file" ];then
     if [ -f $input_file ]; then
         
@@ -187,10 +180,10 @@ if [ ! -z "$input_file" ];then
                                         #echo $csv_line
                                     
                                         line_no="${line%%:*}"
-                                    # echo $line_no
+                                        # echo $line_no
                                         #rm temp.txt
                                         #echo writing to csv file
-                                        echo $dir,$line_no,$csv_line>>"$csv"
+                                        echo $dir,$line_no,"\"$csv_line\"">>"$csv"
                                         done < "$temp"
                                         rm temp.txt
                                     
@@ -305,7 +298,7 @@ if [ ! -z "$input_file" ];then
                                         fi 
                                         #echo chame diye asho
                                     
-                                        echo $dir,$req_line_no,$csv_line>>"$csv"
+                                        echo $dir,$req_line_no,"\"$csv_line\"">>"$csv"
                                         done < "$temp"
                                         rm temp.txt
 
