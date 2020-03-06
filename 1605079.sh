@@ -59,7 +59,8 @@ fi
 
 if [ ! -z "$input_file" ];then
     if [ -f $input_file ]; then
-
+        
+        rm -rf ../output_dir
         mkdir ../output_dir
         output_dir="$(realpath ../output_dir)"
 
@@ -79,6 +80,7 @@ if [ ! -z "$input_file" ];then
     total_matched_file=0
 
     #making a CSV file
+    rm -rf ../output.csv
     csv="$(realpath ../output.csv)"
     echo File Path,Line Number,Line Containing Searched String>"$csv"
 
@@ -91,9 +93,8 @@ if [ ! -z "$input_file" ];then
 
             if [ -d "$dir" ]; then 
                 #echo is a folder $dir 
-                #echo ekhane
                 f "$dir" 
-                #echo here
+
             elif [ -f "$dir" ]; then 
                     #echo $dir 
 
@@ -128,8 +129,6 @@ if [ ! -z "$input_file" ];then
                                     extension="${dir##*.}"
 
                                     if echo $extension | grep -q \/; then 
-                                        #echo no extension
-                                        #echo $dir
                                         #echo $file_name
                                         #echo woext $file_name
 
@@ -152,7 +151,7 @@ if [ ! -z "$input_file" ];then
                                     fi
 
 
-                                    #WRITING PORTIO
+                                    #WRITING PORTION
                                     #writing to the directory-------------------------------------------------
                                     #echo writing to the output $new_f_name
 
