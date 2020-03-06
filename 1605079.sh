@@ -49,7 +49,6 @@ elif [ $# -eq 1 ]; then
 fi
 
    
-
 if [ ! -z "$input_file" ];then
     if [ -f $input_file ]; then
         
@@ -57,7 +56,6 @@ if [ ! -z "$input_file" ];then
         mkdir ../output_dir
         output_dir="$(realpath ../output_dir)"
 
-        #echo "Input file exist"
         start_from=$(head -n 1 $input_file)
         lines_to_look=$(head -n 2 $input_file | tail -n 1)
         word_to_look=$(tail -n 1 $input_file)
@@ -94,7 +92,6 @@ if [ ! -z "$input_file" ];then
                 if file "$dir" | grep -qEi -- 'ASCII|Unicode'; then 
                             #echo $dir is an ASCII file
                             #echo $dir
-
                     if [ $start_from = "begin" ]; then 
                                 #echo from begin
                                 if head -n $lines_to_look "$dir" | grep -qi "$word_to_look"; then
@@ -102,11 +99,6 @@ if [ ! -z "$input_file" ];then
                                     
                                     #finding the line no from the beginning---------------------------------
                                     found_in=`grep -ni "$word_to_look" "$dir" | cut -d':' -f 1 | head -n 1`
-
-                                    #finding the line itself from the beginning
-                                    #line_containing_word=`grep -i $word_to_look "$dir" | head -n 1`
-                                    #echo 
-                                    #echo line containing the word is $line_containing_word
 
                                     #modifying the file name------------------------------------------------
                                     if [ "$is_rootwd" = "yes" ];then
@@ -117,7 +109,6 @@ if [ ! -z "$input_file" ];then
                                     # echo $dir
                                     fi
 
-                                    
                                     #echo $file_name
                                     extension="${dir##*.}"
 
@@ -142,7 +133,6 @@ if [ ! -z "$input_file" ];then
                                         new_f_name=${mod_f_name}${found_in}.${extension}
                                     # echo $new_f_name 
                                     fi
-
 
                                     #WRITING PORTION
                                     #writing to the directory-------------------------------------------------
@@ -181,15 +171,12 @@ if [ ! -z "$input_file" ];then
                                     
                                         line_no="${line%%:*}"
                                         # echo $line_no
-                                        #rm temp.txt
                                         #echo writing to csv file
                                         echo $dir,$line_no,"\"$csv_line\"">>"$csv"
                                         done < "$temp"
                                         rm temp.txt
                                     
                                         fi
-
-
                                     
                                     #echo found in line no: $found_in 
                             
@@ -204,18 +191,6 @@ if [ ! -z "$input_file" ];then
 
                                     #finding the line itself from the beginning
                                     line_containing_word=`grep -i "$word_to_look" "$dir" | head -n 1`
-                                    #echo 
-                                    #echo line containing the word is $line_containing_word
-
-                                    #new_name=$((found_from_back)).pappa
-
-                                    #echo found in $((found_from_back)).pappa
-                                    #echo $new_name
-                                    
-
-                                    #actual_line_no=$((total_line_no - lines_to_look + found_from_back))
-
-                                    #echo found on line no $actual_line_no
 
                                     #modifying the file name------------------------------------------------
                                     if [ "$is_rootwd" = "yes" ];then
@@ -249,12 +224,9 @@ if [ ! -z "$input_file" ];then
                                         #echo $new_f_name 
                                     fi
 
-                                
-                                    #cp "$dir" "$output_dir/${new_f_name}"
                                     #check to see if the file is input file
                                     check="${dir##*/}"
-                                    #echo the thing is $check
-
+                    
                                     if [ ! "$check" = "input.txt" ]; then
 
                                         ((total_matched_file = total_matched_file + 1))
@@ -272,7 +244,6 @@ if [ ! -z "$input_file" ];then
                                         else
                                             file_to_extract=$dir
                                         fi
-
 
                                         #echo the file to extract is $file_to_extract
                                         tail -n $lines_to_look "$file_to_extract" | grep -ni "$word_to_look"> temp.txt
@@ -304,8 +275,6 @@ if [ ! -z "$input_file" ];then
 
                                     fi
                                     
-                                    #Writing to the CSV file
-                                    #echo $dir,$found_in,$line_containing_word>>output.csv
                                 fi
                             fi
                     fi
@@ -314,12 +283,6 @@ if [ ! -z "$input_file" ];then
     }
 
     f $working_dir
-
-
-
-
-
-
 
     echo Total Number of matched file: $total_matched_file
 
