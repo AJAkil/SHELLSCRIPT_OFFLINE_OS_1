@@ -5,6 +5,7 @@ working_dir=
 
 if [ $# -eq 0 ]; then
     echo "Please run the script as : bash 1605079.sh working_dir(optional) input_file_name.txt"
+    echo "Note that the script must exist at the same directory as the working directory and input file"
 elif [ $# -eq 2 ];then
 
     
@@ -13,6 +14,7 @@ elif [ $# -eq 2 ];then
 
             if file $2 | grep directory; then
                 echo "Please run the script as : bash 1605079.sh working_dir(optional) input_file_name.txt"
+                echo "Note that the script must exist at the same directory as the working directory and input file"
             else 
                 working_dir_full_path="$(realpath $1)"
                 working_dir=$1
@@ -20,9 +22,11 @@ elif [ $# -eq 2 ];then
             fi
         else 
             echo "Please give a valid input file name"
+            echo "Note that the script must exist at the same directory as the working directory and input file"
         fi
     else 
         echo "Please give a valid working directory"
+        echo "Note that the script must exist at the same directory as the working directory and input file"
     
     fi
     
@@ -42,6 +46,7 @@ elif [ $# -eq 1 ]; then
             is_rootwd="yes"
         else
             echo "Please run the script as : bash 1605079.sh working_dir(optional) input_file_name.txt"
+            echo "Note that the script must exist at the same directory as the working directory and input file"
         fi
     else 
         echo "Please give a valid input file name"
